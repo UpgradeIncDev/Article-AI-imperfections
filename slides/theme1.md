@@ -228,7 +228,7 @@ AIの生成した長い文章を、検証可能な最小単位（原子的事実
     ① Wikipedia: "A氏はB社を買収" → <strong>True</strong><br>
     ② ニュース検索: "2025年完了" → <strong>False</strong><br>
     <br>
-    判定: <strong>Hallucination (事実誤認)</strong>
+    判定: <strong>事実誤認（ハルシネーション）</strong>
   </div>
 </div>
 
@@ -266,7 +266,24 @@ AIの生成した長い文章を、検証可能な最小単位（原子的事実
 
 # どうすれば、<br>信頼できるAIになりますか？
 
-100%改善することはありませんが、軽減するための「戦術」はあります。
+**運用の工夫** だけでも劇的に改善できます。
+
+<div class="columns">
+  <div class="col">
+    <h3>1. 外部知識を与える (RAG)</h3>
+    <p>
+      モデルの記憶に頼らず、<strong>カンニングペーパー（検索結果）</strong>を渡して答えさせる。<br>
+      <small>※ 現在の主流な対策です。</small>
+    </p>
+  </div>
+  <div class="col">
+    <h3>2. 自己検証させる (Self-Correction)</h3>
+    <p>
+      書きっぱなしにさせず、<strong>「これ間違ってない？」と見直させる</strong>ループを組み込む。<br>
+      <small>※ 自分が書いた内容を客観的にチェックさせます。</small>
+    </p>
+  </div>
+</div>
 
 ---
 
