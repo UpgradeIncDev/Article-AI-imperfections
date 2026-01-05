@@ -188,6 +188,80 @@ LLMは「真実」を知っているわけではありません。
 
 ---
 
+# 【クイズ1】あなたの目の前のAIは、どのタイプ？
+
+ビジネス現場でよくある2つのエラー。
+どちらが「事実性の欠如」で、どちらが「誠実性の欠如」でしょうか？
+
+<div class="columns">
+  <div class="col">
+    <strong class="title">ケースA</strong><br>
+    <br>
+    「この議事録を要約して」と頼んだら、<br>
+    勝手にネット上のニュース情報を混ぜて<br>
+    解説し始めた。<br>
+    <br>
+    判定: <strong>？？？</strong>
+  </div>
+  <div class="col">
+    <strong class="title">ケースB</strong><br>
+    <br>
+    「競合X社の来期の売上予測は？」<br>
+    と聞いたら、決算発表前なのに<br>
+    もっともらしい数字を断言した。<br>
+    <br>
+    判定: <strong>？？？</strong>
+  </div>
+</div>
+
+<br>
+
+> **Think:** 「指示に違反している」か、「現実と矛盾している」か。
+
+<style scoped>
+  .columns {
+    font-size: 20px;
+  }
+  .title {
+    font-size: 25px;
+  }
+</style>
+
+---
+
+# 【解答1】あなたの目の前のAIは、どのタイプ？
+
+<div class="columns">
+  <div class="col">
+    <strong class="title">ケースA：誠実性の欠如</strong><br>
+    <br>
+    <strong>「文脈無視」のハルシネーション</strong><br>
+    事実は正しいかもしれませんが、ユーザーの「要約して（外部情報は入れないで）」という指示を裏切っています。<br>
+    <br>
+    → <strong>RAGで最も警戒すべきエラー</strong>
+  </div>
+  <div class="col">
+    <strong class="title">ケースB：事実性の欠如</strong><br>
+    <br>
+    <strong>「捏造」のハルシネーション</strong><br>
+    AIが知らない情報を、確率的に穴埋めしてしまった典型的な「知ったかぶり」です。<br>
+    <br>
+    <br>
+    → <strong>外部検索での裏取りが必要</strong>
+  </div>
+</div>
+
+<style scoped>
+  .columns {
+    font-size: 20px;
+  }
+  .title {
+    font-size: 25px;
+  }
+</style>
+
+---
+
 # では、その嘘を<br>「自動で」見抜けますか？
 
 ---
@@ -202,11 +276,11 @@ LLMは「真実」を知っているわけではありません。
 | <span>**2. 誠実性の検出**</span> | <span>**文脈・指示の無視**</span><br>RAGでの矛盾、指示違反 | **NLI (自然言語推論)**<br>参照文と生成文の間に「矛盾」がないかを見る。<br>**LLM-as-a-Judge**<br>GPT-4などの別のLLMに「指示に従っているか」を判定させる。 |
 
 <style scoped>
-span {
-  white-space: nowrap;
-}
-table {
-    font-size: 85%;
+  span {
+    white-space: nowrap;
+  }
+  table {
+      font-size: 85%;
 }
 </style>
 
@@ -313,6 +387,74 @@ span {
     Judge: 「指示に従っている」→ <strong>OK</strong>
   </div>
 </div>
+
+---
+
+# 【クイズ2】最適な「嘘発見器」を選んでください
+
+あなたの会社でRAG（社内検索AI）を運用中、以下のトラブルが発生しました。
+**再発防止策として実装すべき機能は A, B どちらでしょうか？**
+
+<br>
+
+**トラブル内容:**
+社内規定PDFには「副業は許可制」とあるのに、AIが「副業は原則禁止です」と回答した。
+
+<div class="columns">
+  <div class="col">
+    <strong class="title">対策 A</strong><br>
+    <br>
+    <strong>Google検索機能</strong>を実装し、<br>
+    一般的な日本企業の副業ルールを<br>
+    参照させる。<br>
+  </div>
+  <div class="col">
+    <strong class="title">対策 B</strong><br>
+    <br>
+    <strong>NLI（含意関係認識）</strong>を実装し、<br>
+    参照元PDFと回答の間に<br>
+    矛盾がないかチェックさせる。<br>
+  </div>
+</div>
+
+<style scoped>
+  .columns {
+    font-size: 20px;
+  }
+  .title {
+    font-size: 25px;
+  }
+</style>
+
+---
+
+# 【解答2】最適な「嘘発見器」を選んでください
+
+**正解は B です。**
+
+<div class="columns">
+  <div class="col">
+    <strong class="title">A: Google検索 → 不適切</strong><br>
+    <br>
+    社内規定（クローズドな情報）はネットに落ちていません。<br>
+    検索させると、他社の規定や一般的なルールを拾ってきてしまい、<strong>かえって混乱（ハルシネーション）が悪化</strong>します。
+  </div>
+  <div class="col">
+    <strong class="title">B: NLIチェック → 最適</strong><br>
+    <br>
+    「参照元（PDF）」と「回答」を見比べ、論理的に矛盾していないかを機械的に判定するのが正解です。<br>
+    これが<strong>「誠実性の検出」</strong>の基本アプローチです。
+  </div>
+</div>
+
+<style scoped>
+  .columns {
+    font-size: 20px;
+  }
+  .title {
+    font-size: 25px;
+  }
+</style>
 
 ---
 
